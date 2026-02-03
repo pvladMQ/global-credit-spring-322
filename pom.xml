@@ -90,4 +90,12 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>gemfire-release-repo</id>
+            <name>Broadcom GemFire Release Repository</name>
+            <url>https://packages.broadcom.com/artifactory/gemfire/</url>
+        </repository>
+    </repositories>
+
 </project>

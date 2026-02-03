@@ -1,7 +1,8 @@
 ---
 applications:
   - name: global-credit-engine
-    memory: 1G
+    memory: 2G
+    disk_quota: 5G
     instances: 1
     path: target/global-credit-engine-1.0.0-SNAPSHOT.jar
     buildpacks:

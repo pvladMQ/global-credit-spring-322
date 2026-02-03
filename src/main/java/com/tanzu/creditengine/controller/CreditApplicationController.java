@@ -147,23 +147,29 @@ public class CreditApplicationController {
         response.put("status", "UP");
         response.put("service", "Global Credit Scoring Engine");
 
-        // Parse VCAP_SERVICES to show bound services
         List<Map<String, Object>> boundServices = new ArrayList<>();
-
-        // Check for common service patterns
         String vcap = System.getenv("VCAP_SERVICES");
+
         if (vcap != null && !vcap.isEmpty() && !vcap.equals("{}")) {
-            response.put("vcapServices", vcap);
             response.put("cloudFoundry", true);
+            try {
+                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                com.fasterxml.jackson.databind.JsonNode root = mapper.readTree(vcap);
 
-            // Verify specific service bindings by name
-            checkServiceBinding(vcap, "credit-db", "PostgreSQL", boundServices);
-            checkServiceBinding(vcap, "credit-msg", "RabbitMQ", boundServices);
-            checkServiceBinding(vcap, "credit-cache", "VMware Tanzu GemFire", boundServices);
+                // Check for services by looking through all service types
+                checkServiceInJson(root, "credit-db", "PostgreSQL", boundServices);
+                checkServiceInJson(root, "credit-msg", "RabbitMQ", boundServices);
+                checkServiceInJson(root, "credit-cache", "VMware Tanzu GemFire", boundServices);
 
+            } catch (Exception e) {
+                logger.error("Error parsing VCAP_SERVICES", e);
+                // Fallback to simple string check if JSON parsing fails
+                checkServiceBindingFallback(vcap, "credit-db", "PostgreSQL", boundServices);
+                checkServiceBindingFallback(vcap, "credit-msg", "RabbitMQ", boundServices);
+                checkServiceBindingFallback(vcap, "credit-cache", "VMware Tanzu GemFire", boundServices);
+            }
         } else {
             response.put("cloudFoundry", false);
-            // Local development - show simulated services
             addLocalService("credit-db", "PostgreSQL", boundServices);
             addLocalService("credit-msg", "RabbitMQ", boundServices);
             addLocalService("credit-cache", "VMware Tanzu GemFire", boundServices);
@@ -173,13 +179,36 @@ public class CreditApplicationController {
         return ResponseEntity.ok(response);
     }
 
-    private void checkServiceBinding(String vcap, String name, String type, List<Map<String, Object>> boundServices) {
+    private void checkServiceInJson(com.fasterxml.jackson.databind.JsonNode root, String name, String type,
+            List<Map<String, Object>> boundServices) {
         Map<String, Object> service = new HashMap<>();
         service.put("name", name);
         service.put("type", type);
+        service.put("status", "missing");
 
-        // Simple check if the service name exists in the JSON string
-        if (vcap.contains("\"" + name + "\"")) {
+        // Iterate over all service types (keys in VCAP_SERVICES)
+        Iterator<String> fieldNames = root.fieldNames();
+        while (fieldNames.hasNext()) {
+            String serviceType = fieldNames.next();
+            com.fasterxml.jackson.databind.JsonNode services = root.get(serviceType);
+            if (services.isArray()) {
+                for (com.fasterxml.jackson.databind.JsonNode s : services) {
+                    if (s.has("name") && s.get("name").asText().equals(name)) {
+                        service.put("status", "bound");
+                        break;
+                    }
+                }
+            }
+        }
+        boundServices.add(service);
+    }
+
+    private void checkServiceBindingFallback(String vcap, String name, String type,
+            List<Map<String, Object>> boundServices) {
+        Map<String, Object> service = new HashMap<>();
+        service.put("name", name);
+        service.put("type", type);
+        if (vcap.contains(name)) { // Looser check
             service.put("status", "bound");
         } else {
             service.put("status", "missing");

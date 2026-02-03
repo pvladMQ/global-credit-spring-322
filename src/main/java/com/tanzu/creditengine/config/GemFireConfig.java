@@ -12,7 +12,19 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
 @Configuration
 @EnableGemfireRepositories(basePackages = "com.tanzu.creditengine.repository")
 @EnableEntityDefinedRegions(basePackageClasses = CreditScoreCache.class, clientRegionShortcut = ClientRegionShortcut.PROXY)
+@org.springframework.data.gemfire.config.annotation.EnableCachingDefinedRegions
 public class GemFireConfig {
-    // Manually defined beans removed to avoid conflict with
-    // EnableEntityDefinedRegions
+
+    @org.springframework.context.annotation.Bean("CreditScoreCache")
+    public org.springframework.data.gemfire.client.ClientRegionFactoryBean<String, CreditScoreCache> creditScoreCacheRegion(
+            org.apache.geode.cache.GemFireCache gemfireCache) {
+
+        org.springframework.data.gemfire.client.ClientRegionFactoryBean<String, CreditScoreCache> clientRegion = new org.springframework.data.gemfire.client.ClientRegionFactoryBean<>();
+
+        clientRegion.setCache(gemfireCache);
+        clientRegion.setClose(false); // Important: Keep region open on context close
+        clientRegion.setShortcut(org.apache.geode.cache.client.ClientRegionShortcut.PROXY);
+
+        return clientRegion;
+    }
 }

@@ -305,7 +305,7 @@
                             <div class="col-md-2 col-6">
                                 <div class="metric-card">
                                     <div class="metric-value" id="avgPostgres">0<small>ms</small></div>
-                                    <div class="metric-label">Avg PostgreSQL</div>
+                                    <div class="metric-label">Avg DB Response (Postgres)</div>
                                 </div>
                             </div>
                             <div class="col-md-2 col-6">
@@ -390,49 +390,10 @@
                             </div>
                         </div>
 
-                        <hr>
-
-                        <h6 class="text-muted mb-3">
-                            <i class="bi bi-speedometer2 me-2"></i>Simulate Regional Latency
-                        </h6>
-                        <div class="row g-2">
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" id="latencyTestSsn"
-                                    placeholder="Enter SSN to test">
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn btn-latency w-100" onclick="runLatencyTest()">
-                                    <i class="bi bi-lightning-charge me-1"></i>Run Test
-                                </button>
-                            </div>
-                        </div>
-
-                        <div id="latencyResults" class="latency-result mt-3" style="display: none;">
-                            <div class="row text-center mb-3">
-                                <div class="col-6">
-                                    <div class="text-danger fw-bold" id="pgLatency">--ms</div>
-                                    <small class="text-muted">PostgreSQL (Bound Service - Source of Truth)</small>
-                                </div>
-                                <div class="col-6">
-                                    <div class="text-success fw-bold" id="gfLatency">--ms</div>
-                                    <small class="text-muted">GemFire (Edge Cache)</small>
-                                </div>
-                            </div>
-                            <div class="mb-2">
-                                <small class="text-muted">PostgreSQL</small>
-                                <div class="progress" style="height: 24px;">
-                                    <div class="progress-bar latency-postgres" id="pgBar" style="width: 0%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <small class="text-muted">GemFire</small>
-                                <div class="progress" style="height: 24px;">
-                                    <div class="progress-bar latency-gemfire" id="gfBar" style="width: 0%"></div>
-                                </div>
-                            </div>
-                            <div class="text-center mt-3">
-                                <span class="badge bg-success fs-6" id="speedupBadge">--x faster</span>
-                            </div>
+                        <div class="alert alert-info mt-3" role="alert">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Demo Note:</strong> Latency is simulated in the background to demonstrate caching
+                            benefits.
                         </div>
                     </div>
                 </div>

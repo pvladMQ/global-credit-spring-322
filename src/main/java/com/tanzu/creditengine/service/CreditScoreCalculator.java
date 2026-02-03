@@ -50,8 +50,6 @@ public class CreditScoreCalculator {
         logger.info("Starting credit score calculation for SSN: {}", message.getSsn());
 
         // Simulate "Regional Hub" network latency (40-80ms)
-        // This ensures the dashboard shows a realistic contrast between remote Postgres
-        // and local GemFire
         try {
             long latency = 40 + random.nextInt(41); // 40 to 80ms
             Thread.sleep(latency);
@@ -65,7 +63,7 @@ public class CreditScoreCalculator {
         Optional<UserFinancials> financialsOpt = userFinancialsRepository
                 .findWithCompleteFinancialData(message.getSsn());
         long pgTime = System.currentTimeMillis() - pgStart;
-        metricsService.recordPostgresQuery(pgTime);
+        // Moved metric recording to end of method
 
         UserFinancials financials;
         if (financialsOpt.isPresent()) {
@@ -95,6 +93,9 @@ public class CreditScoreCalculator {
         long gfStart = System.currentTimeMillis();
         creditScoreCacheRepository.save(cachedScore);
         long gfTime = System.currentTimeMillis() - gfStart;
+
+        // Record metrics only if entire transaction succeeds vs "Ghost" updates
+        metricsService.recordPostgresQuery(pgTime);
         metricsService.recordGemfireQuery(gfTime);
 
         logger.info("Credit score cached in GemFire - SSN: {}, Score: {}, Risk: {}",

@@ -41,20 +41,20 @@ A **Data Hub** demonstration application for Tanzu Experience Day, showcasing th
 
 ## 🎯 The "Data Hub" Concept
 
-This application demonstrates the **Data Hub** pattern - a modern approach to enterprise data architecture where:
+This application demonstrates the **Data Hub** pattern on **Tanzu Platform for Cloud Foundry**, leveraging native service tiles for maximum performance and integration:
 
-1. **Transactional Data (PostgreSQL)**: Stores the source-of-truth financial records with ACID compliance
-2. **Event-Driven Processing (RabbitMQ)**: Decouples request ingestion from heavy processing
-3. **High-Speed Cache (GemFire)**: Provides sub-second global access to calculated results
+1. **PostgreSQL (Tile)**: Managed relational database service storing source-of-truth financial records
+2. **RabbitMQ (Tile)**: Native message broker decoupling ingestion from processing
+3. **Tanzu GemFire (Tile)**: High-speed in-memory data grid caching calculations for sub-second access
 
 ### Why This Matters
 
 | Challenge | Solution |
 |-----------|----------|
-| Complex joins are slow | Offload to async processing via RabbitMQ |
+| Complex joins are slow | Offload to async processing layer |
 | Real-time score lookups needed | Cache in GemFire for < 10ms response |
-| Global data consistency | GemFire replicates across regions |
-| Scalability | Each component scales independently |
+| Service Management | All services managed as Tiles within the Platform |
+| Scalability | Each component scales properly within the foundation |
 
 ## 🚀 Deployment to Cloud Foundry
 
@@ -77,6 +77,10 @@ cf create-service p.rabbitmq standard credit-msg
 
 # Create GemFire/Tanzu Data instance
 cf create-service p-cloudcache standard credit-cache
+
+# Important: Manually create the region if not using auto-configuration
+# Connect via gfsh and run:
+# create region --name=CreditScoreCache --type=PARTITION
 ```
 
 > **Note**: Service names and plans may vary by foundation. Check `cf marketplace` for available options.

@@ -2,7 +2,6 @@ package com.tanzu.creditengine;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.gemfire.config.annotation.EnableClusterAware;
 
 /**
  * Global Credit Scoring Engine
@@ -14,7 +13,6 @@ import org.springframework.data.gemfire.config.annotation.EnableClusterAware;
  * - VMware Tanzu GemFire for sub-second global data retrieval
  */
 @SpringBootApplication
-@EnableClusterAware
 public class GlobalCreditEngineApplication {
 
     public static void main(String[] args) {

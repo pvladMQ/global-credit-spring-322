@@ -19,7 +19,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <spring-gemfire-starter.version>3.0.1</spring-gemfire-starter.version>
+        <spring-gemfire-starter.version>1.0.0</spring-gemfire-starter.version>
     </properties>
 
     <dependencies>
@@ -51,7 +51,7 @@
         <!-- VMware Tanzu GemFire Starter for Spring Boot 3.x -->
         <dependency>
             <groupId>com.vmware.gemfire</groupId>
-            <artifactId>spring-boot-3.2-gemfire-10.0-starter</artifactId>
+            <artifactId>spring-boot-3.1-gemfire-10.0</artifactId>
             <version>${spring-gemfire-starter.version}</version>
         </dependency>
 

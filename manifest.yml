@@ -14,8 +14,8 @@ applications:
       - credit-db      # PostgreSQL service instance
       - credit-msg     # RabbitMQ service instance
       - credit-cache   # GemFire/Tanzu Data service instance
-    routes:
-      - route: global-credit-engine.apps.internal
+    # Random route ensures a unique public URL (e.g., global-credit-engine-brave-lion-xs.cfapps.io)
+    random-route: true
     health-check-type: http
     health-check-http-endpoint: /actuator/health
     timeout: 180

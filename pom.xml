@@ -19,7 +19,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <spring-geode.version>1.7.5</spring-geode.version>
+        <spring-gemfire-starter.version>3.0.1</spring-gemfire-starter.version>
     </properties>
 
     <dependencies>
@@ -48,11 +48,11 @@
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
 
-        <!-- VMware Tanzu GemFire / Spring Data GemFire -->
+        <!-- VMware Tanzu GemFire Starter for Spring Boot 3.x -->
         <dependency>
-            <groupId>org.springframework.geode</groupId>
-            <artifactId>spring-geode-starter</artifactId>
-            <version>${spring-geode.version}</version>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>spring-boot-3.2-gemfire-10.0-starter</artifactId>
+            <version>${spring-gemfire-starter.version}</version>
         </dependency>
 
         <!-- JSON Processing -->

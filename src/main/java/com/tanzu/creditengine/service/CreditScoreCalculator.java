@@ -49,15 +49,6 @@ public class CreditScoreCalculator {
     public int processAndCacheScore(CreditApplicationMessage message) {
         logger.info("Starting credit score calculation for SSN: {}", message.getSsn());
 
-        // Simulate "Regional Hub" network latency (40-80ms)
-        try {
-            long latency = 40 + random.nextInt(41); // 40 to 80ms
-            Thread.sleep(latency);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            logger.warn("Latency simulation interrupted", e);
-        }
-
         // Step 1: Perform "Complex Join" - Query PostgreSQL for user financial data
         long pgStart = System.currentTimeMillis();
         Optional<UserFinancials> financialsOpt = userFinancialsRepository

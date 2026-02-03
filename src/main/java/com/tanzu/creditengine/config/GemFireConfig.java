@@ -15,6 +15,4 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
 @org.springframework.data.gemfire.config.annotation.EnableCachingDefinedRegions
 public class GemFireConfig {
 
-    // Manual bean definition removed to rely on @EnableEntityDefinedRegions
-    // and avoid BeanDefinitionOverrideException
 }

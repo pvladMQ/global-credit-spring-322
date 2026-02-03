@@ -78,9 +78,10 @@ cf create-service p.rabbitmq standard credit-msg
 # Create GemFire/Tanzu Data instance
 cf create-service p-cloudcache standard credit-cache
 
-# Important: Manually create the region if not using auto-configuration
-# Connect via gfsh and run:
-# create region --name=CreditScoreCache --type=PARTITION
+> [!IMPORTANT]
+> **Manual Action Required**: Platform automation for GemFire regions is disabled to demonstrate `gfsh`.
+> Connect via `gfsh` and run:
+> `create region --name=CreditScoreCache --type=PARTITION`
 ```
 
 > **Note**: Service names and plans may vary by foundation. Check `cf marketplace` for available options.

@@ -416,8 +416,7 @@
                                         <th>Full Name</th>
                                         <th>Credit Score</th>
                                         <th>Risk Level</th>
-                                        <th>Calculated At</th>
-                                        <th>Actions</th>
+
                                     </tr>
                                 </thead>
                                 <tbody id="scoresTableBody">
@@ -603,11 +602,6 @@
                             <td><span class="score-display ${scoreClass}">${score.calculatedScore}</span></td>
                             <td><span class="risk-badge ${riskClass}">${formatRiskLevel(score.riskLevel)}</span></td>
                             <td><small>${formattedDate}</small></td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-primary" onclick="runLatencyTestFor('${score.ssn}')">
-                                    <i class="bi bi-speedometer2"></i>
-                                </button>
-                            </td>
                         </tr>
                     `;
                 }).join('');

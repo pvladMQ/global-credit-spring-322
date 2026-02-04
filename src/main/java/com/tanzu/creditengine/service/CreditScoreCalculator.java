@@ -51,6 +51,14 @@ public class CreditScoreCalculator {
 
         // Step 1: Perform "Complex Join" - Query PostgreSQL for user financial data
         long pgStart = System.currentTimeMillis();
+
+        // Simulate complex join latency (e.g. distributed join across multiple tables)
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
         Optional<UserFinancials> financialsOpt = userFinancialsRepository
                 .findWithCompleteFinancialData(message.getSsn());
         long pgTime = System.currentTimeMillis() - pgStart;

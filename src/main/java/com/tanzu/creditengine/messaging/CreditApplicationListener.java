@@ -34,7 +34,7 @@ public class CreditApplicationListener {
     @RabbitListener(queues = "${credit-engine.queue.name:application-requests}")
     public void processCreditApplication(CreditApplicationMessage message) {
         logger.info("Received credit application for SSN: {}", message.getSsn());
-        metricsService.logEvent("Received application from RabbitMQ for SSN: " + message.getSsn());
+        metricsService.logEvent("Ingested application for SSN: " + message.getSsn());
 
         try {
             // Process the application through the credit score calculator

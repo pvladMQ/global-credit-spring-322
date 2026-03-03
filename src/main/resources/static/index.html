@@ -50,35 +50,6 @@
             padding: 1rem 1.5rem;
         }
 
-        .service-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 10px 16px;
-            border-radius: 12px;
-            font-weight: 500;
-            margin: 4px;
-            transition: all 0.2s;
-        }
-
-        .service-badge.bound {
-            background: linear-gradient(135deg, #D4EDDA 0%, #C3E6CB 100%);
-            color: #155724;
-            border: 1px solid #B1DFBB;
-        }
-
-        .service-badge.local {
-            background: linear-gradient(135deg, #FFF3CD 0%, #FFE69C 100%);
-            color: #856404;
-            border: 1px solid #FFE082;
-        }
-
-        .service-badge i {
-            margin-right: 8px;
-            font-size: 1.1em;
-        }
-
-
-
         .metric-card {
             background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
             border-radius: 12px;
@@ -371,7 +342,7 @@
                 </div>
             </div>
 
-            <!-- System Status -->
+            <!-- AI Credit Assistant -->
             <div class="col-lg-7">
                 <div class="card h-100">
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -381,13 +352,14 @@
                         <div id="aiAssistantContainer" class="mb-2">
                             <div class="mb-3">
                                 <label for="aiQuery" class="form-label">Ask the AI Assistant</label>
-                                <textarea class="form-control" id="aiQuery" rows="2" 
+                                <textarea class="form-control" id="aiQuery" rows="2"
                                     placeholder="e.g., Show me the last 10 credit scores for auto loans..."></textarea>
                             </div>
                             <button type="button" class="btn btn-tanzu w-100 mb-3" onclick="submitAiQuery()">
                                 <i class="bi bi-robot me-2"></i>Submit AI Query
                             </button>
-                            <div id="aiResultArea" class="border rounded p-3 bg-light" style="min-height: 100px; max-height: 300px; overflow-y: auto;">
+                            <div id="aiResultArea" class="border rounded p-3 bg-light"
+                                style="min-height: 100px; max-height: 300px; overflow-y: auto;">
                                 <div class="text-center text-muted py-4" id="aiPlaceholder">
                                     Results will appear here...
                                 </div>
@@ -434,7 +406,7 @@
                                 </thead>
                                 <tbody id="scoresTableBody">
                                     <tr>
-                                        <td colspan="6" class="text-center text-muted py-4">
+                                        <td colspan="4" class="text-center text-muted py-4">
                                             <i class="bi bi-inbox fs-1 d-block mb-2"></i>
                                             No cached scores yet. Submit an application to get started.
                                         </td>
@@ -446,33 +418,33 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Event Log -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-dark text-white">
-                    <i class="bi bi-terminal me-2"></i>Live Event Log (RabbitMQ & Processing)
-                </div>
-                <div class="card-body p-0">
-                    <div id="eventLog" class="p-3 font-monospace small"
-                        style="height: 150px; overflow-y: auto; background-color: #f8f9fa;">
-                        <div class="text-muted text-center mt-4">Waiting for events...</div>
+        <!-- Event Log -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">
+                        <i class="bi bi-terminal me-2"></i>Live Event Log (RabbitMQ & Processing)
+                    </div>
+                    <div class="card-body p-0">
+                        <div id="eventLog" class="p-3 font-monospace small"
+                            style="height: 150px; overflow-y: auto; background-color: #f8f9fa;">
+                            <div class="text-muted text-center mt-4">Waiting for events...</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Footer -->
-    <footer class="text-center text-muted py-4 mt-4">
-        <small>
-            <i class="bi bi-heart-fill text-danger"></i>
-            Built for VMware Tanzu Experience Day | Demonstrating the Data Hub Pattern
-        </small>
-    </footer>
-    </div>
+        <!-- Footer -->
+        <footer class="text-center text-muted py-4 mt-4">
+            <small>
+                <i class="bi bi-heart-fill text-danger"></i>
+                Built for VMware Tanzu Experience Day | Demonstrating the Data Hub Pattern
+            </small>
+        </footer>
+    </div> <!-- end container-fluid -->
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -517,7 +489,9 @@
                 document.getElementById('avgGemfire').innerHTML = (data.avgGemfireTimeMs || 0) + '<small>ms</small>';
                 document.getElementById('speedupRatio').innerHTML = (data.speedupRatio || 0) + '<small>x</small>';
                 document.getElementById('cacheHits').textContent = data.cacheHits || 0;
-                document.getElementById('cacheHitRate').innerHTML = (data.cacheHitRate || 0) + '<small>%</small>';
+                if (document.getElementById('cacheHitRate')) {
+                    document.getElementById('cacheHitRate').innerHTML = (data.cacheHitRate || 0) + '<small>%</small>';
+                }
 
                 // Update Event Log
                 const logContainer = document.getElementById('eventLog');
@@ -562,7 +536,7 @@
                     const headers = Object.keys(data[0]);
                     headers.forEach(h => html += `<th>${h}</th>`);
                     html += '</tr></thead><tbody>';
-                    
+
                     data.forEach(row => {
                         html += '<tr>';
                         headers.forEach(h => html += `<td>${row[h]}</td>`);
@@ -594,7 +568,7 @@
                 if (!data.scores || data.scores.length === 0) {
                     tbody.innerHTML = `
                         <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
+                            <td colspan="4" class="text-center text-muted py-4">
                                 <i class="bi bi-inbox fs-1 d-block mb-2"></i>
                                 No cached scores yet. Submit an application to get started.
                             </td>
@@ -676,54 +650,7 @@
             }
         }
 
-        function runLatencyTestFor(ssn) {
-            document.getElementById('latencyTestSsn').value = ssn;
-            runLatencyTest();
-        }
 
-        async function runLatencyTest() {
-            const ssn = document.getElementById('latencyTestSsn').value;
-            if (!ssn) {
-                alert('Please enter an SSN to test');
-                return;
-            }
-
-            const resultsDiv = document.getElementById('latencyResults');
-            resultsDiv.style.display = 'block';
-
-            // Show loading state
-            document.getElementById('pgLatency').textContent = '...';
-            document.getElementById('gfLatency').textContent = '...';
-            document.getElementById('pgBar').style.width = '0%';
-            document.getElementById('gfBar').style.width = '0%';
-
-            try {
-                const response = await fetch(`/api/latency-test/${encodeURIComponent(ssn)}`);
-                const data = await response.json();
-
-                const pgTime = data.postgresTimeMs || 0;
-                const gfTime = data.gemfireTimeMs || 1;
-                const maxTime = Math.max(pgTime, gfTime, 1);
-
-                document.getElementById('pgLatency').textContent = pgTime + 'ms';
-                document.getElementById('gfLatency').textContent = gfTime + 'ms';
-
-                // Animate bars
-                setTimeout(() => {
-                    document.getElementById('pgBar').style.width = (pgTime / maxTime * 100) + '%';
-                    document.getElementById('gfBar').style.width = (gfTime / maxTime * 100) + '%';
-                }, 100);
-
-                document.getElementById('speedupBadge').textContent =
-                    (data.speedup || Math.round(pgTime / gfTime)) + 'x faster with GemFire!';
-
-                // Refresh metrics
-                loadMetrics();
-            } catch (error) {
-                console.error('Error running latency test:', error);
-                alert('Error running latency test. Make sure the SSN exists in the cache.');
-            }
-        }
     </script>
 </body>
 

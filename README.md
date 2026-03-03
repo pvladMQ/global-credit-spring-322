@@ -56,6 +56,17 @@ This application demonstrates the **Data Hub** pattern on **Tanzu Platform for C
 | Service Management | All services managed as Tiles within the Platform |
 | Scalability | Each component scales properly within the foundation |
 
+## 🚀 Deployment
+
+### Prerequisites
+
+1. **CF CLI** installed and logged in
+2. **Java 17+** and **Maven 3.8+** installed
+3. **Services available** in your marketplace:
+   - PostgreSQL (e.g., `postgres`, `p.mysql`)
+   - RabbitMQ (e.g., `p.rabbitmq`, `cloudamqp`)
+   - GemFire (e.g., `p-cloudcache`, `tanzu-gemfire`)
+
 ### Step 1: Initial Setup
 
 Clone the repository and set up the necessary environment variables for GemFire automation:
@@ -105,11 +116,21 @@ cf create-service p.rabbitmq standard credit-msg
 cf create-service p-cloudcache standard credit-cache
 ```
 
-### Step 4: Build the Application
+> **Note**: Service names and plans may vary by foundation. Check `cf marketplace` for available options.
+
+### Step 4: Build and Deploy
+
+```bash
+# Build the application
+mvn clean package -DskipTests
+
+# Push to Cloud Foundry
+cf push
+```
 
 The `manifest.yml` automatically binds the three services and configures the cloud profile.
 
-### Step 4: Verify Deployment
+### Step 5: Verify Deployment
 
 ```bash
 # Check app status
@@ -118,6 +139,7 @@ cf app global-credit-engine
 # View logs
 cf logs global-credit-engine --recent
 ```
+
 
 ## 📡 API Usage
 
@@ -244,15 +266,19 @@ global-credit-engine/
     │   │   └── CreditScoreCacheRepository.java
     │   ├── service/
     │   │   ├── CreditApplicationService.java
-    │   │   └── CreditScoreCalculator.java
+    │   │   ├── CreditScoreCalculator.java
+    │   │   └── MetricsService.java  # In-memory metrics tracking
     │   ├── messaging/
     │   │   ├── CreditApplicationMessage.java
     │   │   └── CreditApplicationListener.java
     │   └── controller/
     │       └── CreditApplicationController.java
     └── resources/
-        └── application.yml          # Application configuration
+        ├── application.yml          # Application configuration
+        └── static/
+            └── index.html           # Dashboard UI with AI Assistant
 ```
+
 
 ## 📝 License
 

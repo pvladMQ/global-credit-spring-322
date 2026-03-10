@@ -9,7 +9,7 @@ applications:
       - java_buildpack_offline
     env:
       JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
-      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
+      JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 11.+ } }'
       SPRING_PROFILES_ACTIVE: cloud
     # Services (credit-db, credit-msg, credit-cache) are bound manually during the demo
     # Random route ensures a unique public URL (e.g., global-credit-engine-brave-lion-xs.cfapps.io)
